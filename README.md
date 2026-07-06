@@ -1,16 +1,29 @@
-# api-pagination-lint
+# API Pagination Lint
 
-**Portfolio Brief.** Check list API specs for pagination, limits, and ordering guarantees.
+![API Pagination Lint cover](assets/readme-cover.svg)
 
-## Problem
+> Check list API specs for pagination, limits, and ordering guarantees
 
-List endpoints break clients when pagination is vague. This CLI reviews API notes for missing limits and cursor semantics.
+![stack](https://img.shields.io/badge/stack-Python-16a34a?style=flat-square) ![python](https://img.shields.io/badge/python-3.11-dc2626?style=flat-square) ![license](https://img.shields.io/badge/license-MIT-7c3aed?style=flat-square) ![ci](https://img.shields.io/badge/ci-GitHub%20Actions-0891b2?style=flat-square)
 
-## Solution
+## At a glance
 
-`api-pagination-lint` accepts API list endpoint notes or OpenAPI snippets in text, JSON, JSONL, or CSV form.
+| Area | Detail |
+| --- | --- |
+| Focus | API operations |
+| Command | `api-pagination-lint` |
+| Formats | text, JSON, JSONL, CSV |
+| Output | Markdown table or JSON |
 
-## Why It Matters
+## What it checks
+
+| Rule | Severity | What it catches |
+| --- | --- | --- |
+| `no-pagination` | high | list endpoint lacks pagination |
+| `missing-limit` | medium | limit is missing |
+| `undefined-order` | low | result ordering is undefined |
+
+## Try it locally
 
 ```bash
 python -m pip install -e ".[dev]"
@@ -18,30 +31,15 @@ api-pagination-lint examples/sample.txt
 api-pagination-lint examples/sample.txt --json --fail-on medium
 ```
 
-## How To Run
+## Notes from the code
 
-| Rule | Severity | Meaning |
-|---|---:|---|
-| `no-pagination` | high | list endpoint lacks pagination |
-| `missing-limit` | medium | limit is missing |
-| `undefined-order` | low | result ordering is undefined |
+`rules.py` keeps the project policy explicit, while `core.py` handles parsing and report rendering. The CLI stays thin on purpose so the checks are easy to test.
 
-## Quality
+## Verify
 
 ```bash
+python -m pip install -e ".[dev]"
 ruff check .
 pytest
 python -m api_pagination_lint --help
 ```
-
-License: MIT
-
-### Example Input
-
-```text
-GET /users returns all users pagination none limit missing order undefined
-```
-
-### Architecture
-
-`cli.py` reads files, `core.py` evaluates records, and `rules.py` keeps the api-pagination-lint policy surface explicit.
