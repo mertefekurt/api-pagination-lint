@@ -1,36 +1,30 @@
-![API Pagination Lint cover](assets/readme-cover.svg)
-
 # API Pagination Lint
 
-> Check list API specs for pagination, limits, and ordering guarantees
+| Field | Value |
+| --- | --- |
+| Area | api contracts |
+| Command | `api-pagination-lint` |
+| Example | `examples/sample.txt` |
 
-This is a review desk for API operations. The useful part is not a dashboard; it is the tiny repeatable moment where vague records become specific findings.
+![API Pagination Lint cover](assets/readme-cover.svg)
 
-## Finding catalog for `api-pagination-lint`
+This repository turns a tiny plain text into reviewable signals for API operations.
 
-| Finding | Level | Why it matters |
-| --- | --- | --- |
-| `no-pagination` | high | list endpoint lacks pagination |
-| `missing-limit` | medium | limit is missing |
-| `undefined-order` | low | result ordering is undefined |
+## Decision points
 
-## Try the sample
+- `no-pagination` - list endpoint lacks pagination (high); Add cursor or page-based pagination..
+- `missing-limit` - limit is missing (medium); Declare default and maximum page sizes..
+- `undefined-order` - result ordering is undefined (low); Document stable sort order..
+
+## Review path
+
+![Policy flow](assets/readme-diagram.svg)
+
+## Try the fixture
 
 ```bash
 git clone https://github.com/mertefekurt/api-pagination-lint.git
 cd api-pagination-lint
-python -m venv .venv
-source .venv/bin/activate
 python -m pip install -e ".[dev]"
-```
-
-```bash
 api-pagination-lint examples/sample.txt
-api-pagination-lint examples/sample.txt --json
 ```
-
-## Reading the output
-
-- Markdown is meant for humans reviewing a change.
-- JSON is meant for CI, scripts, or saved reports.
-- `--fail-on` lets the repo decide how strict a gate should be.
